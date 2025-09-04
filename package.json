@@ -1,0 +1,50 @@
+{
+  "name": "@huan_kong/logger",
+  "version": "1.0.0",
+  "description": "A TypeScript logger package with multiple log levels and formatters",
+  "author": "huankong233",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "./dist/**/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HkTeamX/Logger.git"
+  },
+  "homepage": "https://github.com/HkTeamX/Logger#readme",
+  "keywords": [
+    "logger",
+    "logging",
+    "typescript",
+    "console"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts",
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.34.0",
+    "@types/node": "^24.3.0",
+    "eslint": "^9.34.0",
+    "globals": "^16.3.0",
+    "jiti": "^2.5.1",
+    "prettier": "^3.6.2",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.42.0"
+  }
+}
