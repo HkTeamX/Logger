@@ -2,7 +2,7 @@ import { Logger } from './logger.js'
 import { LoggerOptions } from './types.js'
 
 export class InjectLogger {
-  private logger: Logger
+  logger: Logger
 
   constructor(options?: LoggerOptions) {
     this.logger = new Logger({
