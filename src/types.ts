@@ -13,6 +13,7 @@ export interface LoggerOptions {
   level?: LogLevel
   formatters?: Formatter[]
   colors?: LogColors
+  title?: string
 }
 
 /**

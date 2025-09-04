@@ -17,10 +17,13 @@ export class Logger {
     [LogLevel.WARN]: pc.yellow,
     [LogLevel.ERROR]: pc.red,
   }
+  private title: string
 
   constructor(options: LoggerOptions = {}) {
     this.level = options.level ?? LogLevel.INFO
     this.formatters = options.formatters ?? [defaultFormatter]
+    this.colors = options.colors ?? this.colors
+    this.title = options.title ?? ''
   }
 
   DEBUG(...messages: unknown[]) {
@@ -45,12 +48,17 @@ export class Logger {
 
   private print(level: LogLevel, ...messages: unknown[]) {
     if (level < this.level) return
+
     this.formatters.forEach((formatter) => (messages = formatter(...messages)))
-    console.log(
+
+    const args = [
       pc.cyan(`[${this.getDateString()}]`),
       this.colors[level](`[${this.names[level]}]`) + (this.names[level].length < 5 ? ' ' : ''),
-      ...messages,
-    )
+    ]
+
+    if (this.title) args.unshift(pc.yellow(`[${this.title}]`))
+
+    console.log(...args, ...messages)
   }
 
   setLevel(level: LogLevel) {
@@ -83,5 +91,13 @@ export class Logger {
 
   getColors() {
     return this.colors
+  }
+
+  setTitle(title: string) {
+    this.title = title
+  }
+
+  getTitle() {
+    return this.title
   }
 }
