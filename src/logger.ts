@@ -53,7 +53,7 @@ export class Logger {
 
     const args = [
       pc.cyan(`[${this.getDateString()}]`),
-      this.colors[level](`[${this.names[level]}]`) + (this.names[level].length < 5 ? ' ' : ''),
+      this.colors[level](`[${this.names[level]}]`),
     ]
 
     if (this.title) args.push(pc.yellow(`[${this.title}]`))
