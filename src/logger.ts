@@ -56,7 +56,7 @@ export class Logger {
       this.colors[level](`[${this.names[level]}]`) + (this.names[level].length < 5 ? ' ' : ''),
     ]
 
-    if (this.title) args.unshift(pc.yellow(`[${this.title}]`))
+    if (this.title) args.push(pc.yellow(`[${this.title}]`))
 
     console.log(...args, ...messages)
   }
