@@ -4,7 +4,7 @@ import { LoggerOptions } from './types.js'
 export class InjectLogger {
   private logger: Logger
 
-  constructor(options: LoggerOptions) {
+  constructor(options?: LoggerOptions) {
     this.logger = new Logger({
       title: this.constructor.name,
       ...options,
