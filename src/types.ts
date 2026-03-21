@@ -1,22 +1,28 @@
 import type { Formatter as ColorFormatter } from 'picocolors/types.js'
 
-export enum LogLevel {
-  DEBUG = 0,
-  INFO = 1,
-  WARN = 2,
-  ERROR = 3,
-}
+export const LogLevel = {
+  DEBUG: 0,
+  INFO: 1,
+  WARN: 2,
+  ERROR: 3,
+} as const
 
-export type LogColors = { [key in LogLevel]: ColorFormatter }
+export type LogLevelType = typeof LogLevel[keyof typeof LogLevel]
+
+export type LogColors = { [key in LogLevelType]: ColorFormatter }
+export type LogNames = { [key in LogLevelType]: string }
 
 export interface LoggerOptions {
-  level?: LogLevel
+  enable?: boolean
+  title: string
+  level?: LogLevelType
+
   formatters?: Formatter[]
   colors?: LogColors
-  title?: string
+  names?: LogNames
 }
 
 /**
  * 格式化器类型
  */
-export type Formatter = (...args: unknown[]) => unknown[]
+export type Formatter = (...args: unknown[]) => string[]
