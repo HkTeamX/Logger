@@ -28,7 +28,9 @@ yarn add @huan_kong/logger
 import { Logger, LogLevel } from '@huan_kong/logger'
 
 // 创建 logger 实例
-const logger = new Logger()
+const logger = new Logger({
+  title: '标题', // 必选
+})
 
 // 基本使用
 logger.INFO('这是一条信息日志')
@@ -50,6 +52,7 @@ logger.INFO('用户登录', { userId: 123, ip: '192.168.1.1' })
 import { defaultFormatter, Logger, LogLevel } from '@huan_kong/logger'
 
 const logger = new Logger({
+  title: '标题', // 必选
   level: LogLevel.DEBUG, // 设置日志级别
   formatters: [defaultFormatter], // 自定义格式化器
 })
