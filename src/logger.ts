@@ -1,103 +1,80 @@
+import type { LoggerOptions, LogLevelType } from './types.js'
 import pc from 'picocolors'
 import { defaultFormatter } from './formatter.js'
-import { LogLevel, type Formatter, type LogColors, type LoggerOptions } from './types.js'
+import { LogLevel } from './types.js'
 
-export class Logger {
-  private level: LogLevel
-  private formatters: Formatter[]
-  private names = {
-    [LogLevel.DEBUG]: 'DEBUG',
-    [LogLevel.INFO]: 'INFO',
-    [LogLevel.WARN]: 'WARN',
-    [LogLevel.ERROR]: 'ERROR',
-  }
-  private colors: LogColors = {
+export const defaultOptions: Required<Omit<LoggerOptions, 'title'>> = {
+  enable: true,
+  level: LogLevel.INFO,
+
+  formatters: [defaultFormatter],
+  colors: {
     [LogLevel.DEBUG]: pc.magenta,
     [LogLevel.INFO]: pc.blue,
     [LogLevel.WARN]: pc.yellow,
     [LogLevel.ERROR]: pc.red,
-  }
-  private title: string
+  },
+  names: {
+    [LogLevel.DEBUG]: 'DEBUG',
+    [LogLevel.INFO]: 'INFO',
+    [LogLevel.WARN]: 'WARN',
+    [LogLevel.ERROR]: 'ERROR',
+  },
+}
 
-  constructor(options: LoggerOptions = {}) {
-    this.level = options.level ?? LogLevel.INFO
-    this.formatters = options.formatters ?? [defaultFormatter]
-    this.colors = options.colors ?? this.colors
-    this.title = options.title ?? ''
+export class Logger {
+  options: Required<LoggerOptions>
+
+  constructor(options: LoggerOptions) {
+    this.options = {
+      enable: options.enable ?? defaultOptions.enable,
+      title: options.title,
+      level: options.level ?? defaultOptions.level,
+      formatters: options.formatters ?? defaultOptions.formatters,
+      colors: options.colors ?? defaultOptions.colors,
+      names: options.names ?? defaultOptions.names,
+    }
   }
 
-  DEBUG(...messages: unknown[]) {
+  clone(options: LoggerOptions): Logger {
+    return new Logger({
+      ...this.options,
+      ...options,
+    })
+  }
+
+  DEBUG(...messages: unknown[]): void {
     this.print(LogLevel.DEBUG, ...messages)
   }
 
-  INFO(...messages: unknown[]) {
+  INFO(...messages: unknown[]): void {
     this.print(LogLevel.INFO, ...messages)
   }
 
-  WARN(...messages: unknown[]) {
+  WARN(...messages: unknown[]): void {
     this.print(LogLevel.WARN, ...messages)
   }
 
-  ERROR(...messages: unknown[]) {
+  ERROR(...messages: unknown[]): void {
     this.print(LogLevel.ERROR, ...messages)
   }
 
-  private getDateString() {
-    return new Date().toLocaleString()
-  }
+  private print(level: LogLevelType, ...messages: unknown[]): void {
+    if (level < this.options.level || !this.options.enable) {
+      return
+    }
 
-  private print(level: LogLevel, ...messages: unknown[]) {
-    if (level < this.level) return
-
-    this.formatters.forEach((formatter) => (messages = formatter(...messages)))
+    this.options.formatters.forEach(formatter => (messages = formatter(...messages)))
 
     const args = [
-      pc.cyan(`[${this.getDateString()}]`),
-      this.colors[level](`[${this.names[level]}]`) + (this.names[level].length < 5 ? ' ' : ''),
+      pc.cyan(`[${new Date().toLocaleString()}]`),
+      this.options.colors[level](`[${this.options.names[level]}]`),
     ]
 
-    if (this.title) args.unshift(pc.yellow(`[${this.title}]`))
+    if (this.options.title) {
+      args.push(pc.yellow(`[${this.options.title}]`))
+    }
 
     console.log(...args, ...messages)
-  }
-
-  setLevel(level: LogLevel) {
-    this.level = level
-  }
-
-  getLevel() {
-    return this.level
-  }
-
-  pushFormatter(formatter: Formatter) {
-    this.formatters.push(formatter)
-  }
-
-  unshiftFormatter(formatter: Formatter) {
-    this.formatters.unshift(formatter)
-  }
-
-  removeFormatter(formatter: Formatter) {
-    this.formatters = this.formatters.filter((f) => f !== formatter)
-  }
-
-  getFormatters() {
-    return this.formatters
-  }
-
-  setColors(colors: LogColors) {
-    this.colors = colors
-  }
-
-  getColors() {
-    return this.colors
-  }
-
-  setTitle(title: string) {
-    this.title = title
-  }
-
-  getTitle() {
-    return this.title
   }
 }

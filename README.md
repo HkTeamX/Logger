@@ -13,6 +13,8 @@
 ## 安装
 
 ```bash
+bun add @huan_kong/logger
+# 或
 npm install @huan_kong/logger
 # 或
 pnpm add @huan_kong/logger
@@ -45,7 +47,7 @@ logger.INFO('用户登录', { userId: 123, ip: '192.168.1.1' })
 ## 配置选项
 
 ```typescript
-import { Logger, LogLevel, defaultFormatter } from '@huan_kong/logger'
+import { defaultFormatter, Logger, LogLevel } from '@huan_kong/logger'
 
 const logger = new Logger({
   level: LogLevel.DEBUG, // 设置日志级别
@@ -69,7 +71,7 @@ const customFormatter: Formatter = (...args) => {
 }
 
 // 添加格式化器
-logger.pushFormatter(customFormatter)
+logger.options.formatters.push(customFormatter)
 ```
 
 ## API 文档
@@ -87,17 +89,6 @@ logger.pushFormatter(customFormatter)
 - `WARN(...messages: unknown[])` - 输出警告日志
 - `ERROR(...messages: unknown[])` - 输出错误日志
 
-#### 配置方法
-
-- `setLevel(level: LogLevel)` - 设置日志级别
-- `getLevel()` - 获取当前日志级别
-- `pushFormatter(formatter: Formatter)` - 添加格式化器到末尾
-- `unshiftFormatter(formatter: Formatter)` - 添加格式化器到开头
-- `removeFormatter(formatter: Formatter)` - 移除指定格式化器
-- `getFormatters()` - 获取所有格式化器
-- `setColors(colors: LogColors)` - 设置颜色主题
-- `getColors()` - 获取当前颜色配置
-
 ### 日志级别
 
 ```typescript
@@ -113,19 +104,13 @@ enum LogLevel {
 
 ```bash
 # 安装依赖
-pnpm install
-
-# 开发模式
-pnpm dev
+bun install
 
 # 构建
-pnpm build
+bun build
 
 # 代码检查
-pnpm lint
-
-# 格式化代码
-pnpm format
+bun lint
 ```
 
 ## 许可证
