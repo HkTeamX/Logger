@@ -1,13 +1,13 @@
 import type { LoggerOptions, LogLevelType } from './types.js'
 import pc from 'picocolors'
-import { defaultFormatter } from './formatter.js'
+import { defaultTransformer } from './transformer.js'
 import { LogLevel } from './types.js'
 
 export const defaultOptions: Required<Omit<LoggerOptions, 'title'>> = {
   enable: true,
   level: LogLevel.INFO,
 
-  formatters: [defaultFormatter],
+  transformers: [defaultTransformer],
   colors: {
     [LogLevel.DEBUG]: pc.magenta,
     [LogLevel.INFO]: pc.blue,
@@ -30,7 +30,7 @@ export class Logger {
       enable: options.enable ?? defaultOptions.enable,
       title: options.title,
       level: options.level ?? defaultOptions.level,
-      formatters: options.formatters ?? defaultOptions.formatters,
+      transformers: options.transformers ?? defaultOptions.transformers,
       colors: options.colors ?? defaultOptions.colors,
       names: options.names ?? defaultOptions.names,
     }
@@ -64,7 +64,7 @@ export class Logger {
       return
     }
 
-    this.options.formatters.forEach(formatter => (messages = formatter(...messages)))
+    this.options.transformers.forEach(transformer => (messages = transformer({ logger: this, level }, ...messages)))
 
     const args = [
       pc.cyan(`[${new Date().toLocaleString()}]`),

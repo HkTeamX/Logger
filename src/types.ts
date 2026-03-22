@@ -1,4 +1,5 @@
 import type { Formatter as ColorFormatter } from 'picocolors/types.js'
+import type { Logger } from './logger.js'
 
 export const LogLevel = {
   DEBUG: 0,
@@ -17,7 +18,7 @@ export interface LoggerOptions {
   title: string
   level?: LogLevelType
 
-  formatters?: Formatter[]
+  transformers?: Transformer[]
   colors?: LogColors
   names?: LogNames
 }
@@ -25,4 +26,4 @@ export interface LoggerOptions {
 /**
  * 格式化器类型
  */
-export type Formatter = (...args: unknown[]) => string[]
+export type Transformer = (context: { logger: Logger, level: LogLevelType }, ...args: unknown[]) => string[]
