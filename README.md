@@ -49,22 +49,22 @@ logger.INFO('用户登录', { userId: 123, ip: '192.168.1.1' })
 ## 配置选项
 
 ```typescript
-import { defaultFormatter, Logger, LogLevel } from '@huan_kong/logger'
+import { defaultTransformer, Logger, LogLevel } from '@huan_kong/logger'
 
 const logger = new Logger({
   title: '标题', // 必选
   level: LogLevel.DEBUG, // 设置日志级别
-  formatters: [defaultFormatter], // 自定义格式化器
+  transformers: [defaultTransformer], // 自定义格式化器
 })
 ```
 
 ## 自定义格式化器
 
 ```typescript
-import type { Formatter } from '@huan_kong/logger'
+import type { Transformer } from '@huan_kong/logger'
 
 // 创建自定义格式化器
-const customFormatter: Formatter = (...args) => {
+const customTransformer: Transformer = (...args) => {
   return args.map((arg) => {
     if (typeof arg === 'string') {
       return arg.toUpperCase()
@@ -74,7 +74,7 @@ const customFormatter: Formatter = (...args) => {
 }
 
 // 添加格式化器
-logger.options.formatters.push(customFormatter)
+logger.options.transformer.push(customTransformer)
 ```
 
 ## API 文档
