@@ -2,7 +2,7 @@ import { defaultTransformer, Logger, saveFileTransformer } from '../src/index.js
 
 const logger = new Logger({
   title: 'Test Logger',
-  Transformers: [defaultTransformer, saveFileTransformer({ filename: () => `./logs/${new Date().toISOString().slice(0, 10)}.log` })],
+  transformers: [defaultTransformer, saveFileTransformer({ filename: () => `./logs/${new Date().toISOString().slice(0, 10)}.log` })],
 })
 
 logger.DEBUG('This is a debug message', { a: 1, b: 2 })
